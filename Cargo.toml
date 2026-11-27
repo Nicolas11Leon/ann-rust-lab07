@@ -6,3 +6,4 @@ description = "From-scratch Artificial Neural Network (MLP with Backpropagation)
 license = "MIT"
 
 [dependencies]
+smartcore = "0.7"
