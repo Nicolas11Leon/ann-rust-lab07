@@ -3,6 +3,7 @@
 pub mod metrics;
 pub mod nn;
 pub mod preprocessing;
+pub mod viz;
 
 /// Returns the crate version.
 pub fn crate_version() -> &'static str {
