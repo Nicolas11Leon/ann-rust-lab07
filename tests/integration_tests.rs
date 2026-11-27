@@ -47,3 +47,26 @@ fn uci_breast_cancer_pipeline_achieves_high_accuracy() {
     );
     assert_eq!(nn.input_feature_importance().len(), 30);
 }
+
+#[test]
+fn advertisement_ann_achieves_competitive_accuracy() {
+    let dataset = load_csv("data/advertisement.csv", &[2, 3], 4, "1")
+        .expect("data/advertisement.csv should load");
+    let (raw_train_x, train_y, raw_test_x, test_y) =
+        train_test_split(&dataset.features, &dataset.targets, 0.75, 42);
+
+    let scaler = MinMaxScaler::fit(&raw_train_x);
+    let train_x = scaler.transform(&raw_train_x);
+    let test_x = scaler.transform(&raw_test_x);
+
+    let mut nn = NeuralNet::new(&[2, 4, 1], 0.3, 42);
+    nn.fit(&train_x, &train_y, 2_000, 1.0);
+
+    let probs = nn.predict_batch(&test_x);
+    let cm = ConfusionMatrix::from_predictions(&test_y, &probs, 0.5);
+    assert!(
+        cm.accuracy() >= 0.80,
+        "Expected >= 0.80 accuracy on Advertisement test set, got {}",
+        cm.accuracy()
+    );
+}
