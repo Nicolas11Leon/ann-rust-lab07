@@ -1,5 +1,7 @@
 //! Pure-Rust Artificial Neural Network library for Lab 07.
 
+pub mod metrics;
+pub mod nn;
 pub mod preprocessing;
 
 /// Returns the crate version.
