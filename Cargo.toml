@@ -1,0 +1,8 @@
+[package]
+name = "ann-rust-lab07"
+version = "0.1.0"
+edition = "2021"
+description = "From-scratch Artificial Neural Network (MLP with Backpropagation) in pure Rust, replicating Lab 07."
+license = "MIT"
+
+[dependencies]
