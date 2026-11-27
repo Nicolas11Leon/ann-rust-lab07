@@ -25,3 +25,25 @@ fn iris_pipeline_classifies_setosa_accurately() {
     let prob = nn.compute(&new_scaled);
     assert!(prob > 0.9, "Expected Setosa probability > 0.9, got {}", prob);
 }
+
+#[test]
+fn uci_breast_cancer_pipeline_achieves_high_accuracy() {
+    let feature_indices: Vec<usize> = (0..30).collect();
+    let dataset = load_csv("data/uci_breast_cancer.csv", &feature_indices, 30, "malignant")
+        .expect("data/uci_breast_cancer.csv should load");
+    let scaler = MinMaxScaler::fit(&dataset.features);
+    let scaled = scaler.transform(&dataset.features);
+    let (train_x, train_y, test_x, test_y) = train_test_split(&scaled, &dataset.targets, 0.7, 42);
+
+    let mut nn = NeuralNet::new(&[30, 4, 1], 0.2, 42);
+    nn.fit(&train_x, &train_y, 1_500, 0.5);
+
+    let probs = nn.predict_batch(&test_x);
+    let cm = ConfusionMatrix::from_predictions(&test_y, &probs, 0.5);
+    assert!(
+        cm.accuracy() >= 0.92,
+        "Expected >= 0.92 accuracy on UCI Breast Cancer test set, got {}",
+        cm.accuracy()
+    );
+    assert_eq!(nn.input_feature_importance().len(), 30);
+}

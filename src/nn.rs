@@ -95,6 +95,18 @@ impl NeuralNet {
         inputs.iter().map(|row| self.compute(row)).collect()
     }
 
+    /// Computes input feature importance as the sum of absolute outgoing weights in layer 0.
+    pub fn input_feature_importance(&self) -> Vec<f64> {
+        let in_dim = self.layer_sizes[0];
+        let mut importance = vec![0.0; in_dim];
+        for w_row in &self.layers[0].weights {
+            for (i, &w) in w_row.iter().enumerate() {
+                importance[i] += w.abs();
+            }
+        }
+        importance
+    }
+
     /// Trains the network using backpropagation until `max_epochs` or `error_threshold` is reached.
     ///
     /// Tracks `0.5 * sum((target - output)^2)` as `final_error` (matching R's `neuralnet` SSE/2).
