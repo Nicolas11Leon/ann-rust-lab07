@@ -1,5 +1,7 @@
 //! Pure-Rust Artificial Neural Network library for Lab 07.
 
+pub mod preprocessing;
+
 /// Returns the crate version.
 pub fn crate_version() -> &'static str {
     env!("CARGO_PKG_VERSION")
