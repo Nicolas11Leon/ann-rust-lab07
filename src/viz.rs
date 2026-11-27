@@ -47,11 +47,11 @@ pub fn export_network_svg<P: AsRef<Path>>(
 
     let mut svg = String::new();
     svg.push_str(&format!(
-        r#"<svg xmlns="http://www.w3.org/2000/svg" width="{}" height="{}" viewBox="0 0 {} {}">"#,
+        r##"<svg xmlns="http://www.w3.org/2000/svg" width="{}" height="{}" viewBox="0 0 {} {}">"##,
         width, height, width, height
     ));
     svg.push('\n');
-    svg.push_str(r#"  <rect width="100%" height="100%" fill="#ffffff"/>"#);
+    svg.push_str(r##"  <rect width="100%" height="100%" fill="#ffffff"/>"##);
     svg.push('\n');
 
     // Draw weighted edges
@@ -60,10 +60,10 @@ pub fn export_network_svg<P: AsRef<Path>>(
             let (x2, y2) = coords[l_idx + 1][j];
             for (i, &w) in w_row.iter().enumerate() {
                 let (x1, y1) = coords[l_idx][i];
-                let color = if w >= 0.0 { "#2563eb" } else { "#dc2626" };
+                let color = if w >= 0.0 { "##2563eb" } else { "##dc2626" };
                 let stroke_w = (w.abs() * 0.6).clamp(0.8, 3.0);
                 svg.push_str(&format!(
-                    r#"  <line x1="{:.1}" y1="{:.1}" x2="{:.1}" y2="{:.1}" stroke="{}" stroke-width="{:.2}" stroke-opacity="0.75"/>"#,
+                    r##"  <line x1="{:.1}" y1="{:.1}" x2="{:.1}" y2="{:.1}" stroke="{}" stroke-width="{:.2}" stroke-opacity="0.75"/>"##,
                     x1, y1, x2, y2, color, stroke_w
                 ));
                 svg.push('\n');
@@ -71,7 +71,7 @@ pub fn export_network_svg<P: AsRef<Path>>(
                 let mx = x1 + (x2 - x1) * 0.42;
                 let my = y1 + (y2 - y1) * 0.42 - 4.0;
                 svg.push_str(&format!(
-                    r#"  <text x="{:.1}" y="{:.1}" font-family="monospace" font-size="10" fill="#1f2937" text-anchor="middle">{:.3}</text>"#,
+                    r##"  <text x="{:.1}" y="{:.1}" font-family="monospace" font-size="10" fill="#1f2937" text-anchor="middle">{:.3}</text>"##,
                     mx, my, w
                 ));
                 svg.push('\n');
@@ -84,12 +84,12 @@ pub fn export_network_svg<P: AsRef<Path>>(
         let bx = (coords[l_idx][0].0 + coords[l_idx + 1][0].0) / 2.0;
         let by = 36.0;
         svg.push_str(&format!(
-            r#"  <circle cx="{:.1}" cy="{:.1}" r="14" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>"#,
+            r##"  <circle cx="{:.1}" cy="{:.1}" r="14" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>"##,
             bx, by
         ));
         svg.push('\n');
         svg.push_str(&format!(
-            r#"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="12" fill="#1e3a8a" text-anchor="middle">1</text>"#,
+            r##"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="12" fill="#1e3a8a" text-anchor="middle">1</text>"##,
             bx, by + 4.0
         ));
         svg.push('\n');
@@ -97,14 +97,14 @@ pub fn export_network_svg<P: AsRef<Path>>(
         for (j, &b) in layer.biases.iter().enumerate() {
             let (x2, y2) = coords[l_idx + 1][j];
             svg.push_str(&format!(
-                r#"  <line x1="{:.1}" y1="{:.1}" x2="{:.1}" y2="{:.1}" stroke="#3b82f6" stroke-width="1.0" stroke-dasharray="4,3"/>"#,
+                r##"  <line x1="{:.1}" y1="{:.1}" x2="{:.1}" y2="{:.1}" stroke="#3b82f6" stroke-width="1.0" stroke-dasharray="4,3"/>"##,
                 bx, by + 14.0, x2, y2
             ));
             svg.push('\n');
             let mx = bx + (x2 - bx) * 0.55;
             let my = by + (y2 - by) * 0.55;
             svg.push_str(&format!(
-                r#"  <text x="{:.1}" y="{:.1}" font-family="monospace" font-size="10" fill="#1d4ed8">{:.3}</text>"#,
+                r##"  <text x="{:.1}" y="{:.1}" font-family="monospace" font-size="10" fill="#1d4ed8">{:.3}</text>"##,
                 mx, my, b
             ));
             svg.push('\n');
@@ -115,14 +115,14 @@ pub fn export_network_svg<P: AsRef<Path>>(
     for (l_idx, layer_coords) in coords.iter().enumerate() {
         for (n_idx, &(x, y)) in layer_coords.iter().enumerate() {
             let fill = if l_idx == 0 {
-                "#f3f4f6"
+                "##f3f4f6"
             } else if l_idx == num_layers - 1 {
-                "#dcfce7"
+                "##dcfce7"
             } else {
-                "#fef3c7"
+                "##fef3c7"
             };
             svg.push_str(&format!(
-                r#"  <circle cx="{:.1}" cy="{:.1}" r="16" fill="{}" stroke="#111827" stroke-width="1.8"/>"#,
+                r##"  <circle cx="{:.1}" cy="{:.1}" r="16" fill="{}" stroke="#111827" stroke-width="1.8"/>"##,
                 x, y, fill
             ));
             svg.push('\n');
@@ -133,13 +133,13 @@ pub fn export_network_svg<P: AsRef<Path>>(
                     .map(String::as_str)
                     .unwrap_or("Input");
                 svg.push_str(&format!(
-                    r#"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="13" fill="#111827" text-anchor="end">{}</text>"#,
+                    r##"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="13" fill="#111827" text-anchor="end">{}</text>"##,
                     x - 24.0, y + 4.0, label
                 ));
                 svg.push('\n');
             } else if l_idx == num_layers - 1 && n_idx == 0 {
                 svg.push_str(&format!(
-                    r#"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="13" fill="#111827" text-anchor="start">{}</text>"#,
+                    r##"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="13" fill="#111827" text-anchor="start">{}</text>"##,
                     x + 24.0, y + 4.0, output_name
                 ));
                 svg.push('\n');
@@ -149,7 +149,7 @@ pub fn export_network_svg<P: AsRef<Path>>(
 
     // Footer with Error and Steps
     svg.push_str(&format!(
-        r#"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="14" fill="#111827" text-anchor="middle">Error: {:.5}   Steps: {}</text>"#,
+        r##"  <text x="{:.1}" y="{:.1}" font-family="sans-serif" font-size="14" fill="#111827" text-anchor="middle">Error: {:.5}   Steps: {}</text>"##,
         width / 2.0,
         height - 20.0,
         nn.final_error,
